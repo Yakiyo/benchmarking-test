@@ -1,15 +1,19 @@
 #!/usr/bin/env sh
 
 # Build stuff first
-DUMMY=$(gcc main.c -o build/capp)
+echo "Compiling C"
+gcc main.c -o build/capp
 
-DUMMY=$(dart compile exe main.dart -o build/dartapp)
+echo "Compiling Dart"
+dart compile exe main.dart -o build/dartapp
 
-DUMMY=$(deno compile main.js -o build/jsapp)
+echo "Compiling Deno"
+deno compile main.js -o build/jsapp
 
-DUMMY=$(rustc main.rs -o build/rustapp)
+echo "Compiling Rust"
+rustc main.rs -o build/rustapp
 
-hyperfine --warmup 5 --runs 15 \
+hyperfine --warmup 5 --runs 15 --export-markdown RESULT.md \
 	"ENV=env ./build/dartapp" \
 	"ENV=env ./build/capp" \
 	"ENV=env ./build/jsapp" \
